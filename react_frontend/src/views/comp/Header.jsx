@@ -14,7 +14,9 @@ export default function Header(props) {
         axiosClient.post("/logout").then(() => {
             setUser({});
             setToken(null);
-            navigate('/')
+            navigate("/");
+            localStorage.removeItem("USER_ID");
+            localStorage.removeItem("USER_NAME");
         });
     };
     const onMouseEnter = () => {

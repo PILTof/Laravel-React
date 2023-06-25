@@ -1,10 +1,8 @@
-const url = "http://localhost:8000/storage/";
+const url = import.meta.env.VITE_STORAGE_URL;
 import AvatarPlaceholder from "../../assets/avatars/AvatarPlaceholder.svg";
 import axiosClient from "../../axios-client";
-import { useStateContext } from "../../contexts/ContextProvider";
 
 export default function Card(props) {
-    const { getActiveUser, user } = useStateContext();
     const onClick = (ev) => {
         ev.preventDefault();
         console.log("card id: " + props.post_id);
@@ -20,8 +18,13 @@ export default function Card(props) {
     };
     return (
         <div className={`item-${props.row} profile-card`}>
-            <button onClick={onClick}>delete post</button>
-            <img width={200} height={200} src={url + props.image} alt="" />
+            <div className="card-top">
+                <button className="del-post-btn" onClick={onClick}>
+                    <div className="line-hor"></div>
+                    <div className="line-vert"></div>
+                </button>
+                <img width={200} height={200} src={url + props.image} alt="" />
+            </div>
             <div className="card-text">
                 <h5>{props.label}</h5>
                 <div className="author">

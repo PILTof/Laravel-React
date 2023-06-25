@@ -1,6 +1,6 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import ProfileHeader from "../assets/ProfileHeader.png";
-import AvatarPlaceholder from "../assets/avatars/AvatarPlaceholder.svg";
+import DefaultAvatar from "../assets/avatars/AvatarPlaceholder.svg";
 import { useStateContext } from "../contexts/ContextProvider";
 import { Overlay, Spinner } from "react-bootstrap";
 import DiscordLogo from "../assets/DiscordLogo.svg";
@@ -14,11 +14,17 @@ import ProfileCards from "./comp/ProfileCards";
 
 export default function MainUserProfile(props) {
     const { user, globalLoading, token, getActiveUser } = useStateContext();
+    const navigator = useNavigate();
+    if (token == null) {
+        navigator("/");
+    }
     const [manageOpen, setManageOpen] = useState(false);
     const [showError, setShowError] = useState(false);
     const [activeTab, setActiveTab] = useState(1);
     const nameRef = useRef();
     const bioRef = useRef();
+    const avatarRef = useRef();
+    const [avatarImage, setAvatarImage] = useState();
     // Открыть менеджер Пользователя
     const onClick = (ev) => {
         ev.preventDefault();
@@ -53,6 +59,17 @@ export default function MainUserProfile(props) {
                 });
         }
     };
+    // При клике на аватар
+    const onAvatarClick = (ev) => {
+        ev.preventDefault();
+        avatarRef.current.click();
+    };
+    // При выборе аватарки
+    const onAvatarChange = (ev) => {
+        ev.preventDefault();
+        console.log(ev.target.files)
+        setAvatarImage(ev.target.files)
+    }
 
     return (
         <div>
@@ -63,11 +80,23 @@ export default function MainUserProfile(props) {
             {/* Инфоблок */}
             <div className="container">
                 <div className="profile">
-                    <img
-                        className="profile_avatar"
-                        src={AvatarPlaceholder}
-                        alt=""
-                    />
+                    {!manageOpen ? (
+                        <img
+                            className="profile_avatar"
+                            src={DefaultAvatar}
+                            alt=""
+                        />
+                    ) : (
+                        <div>
+                            <img
+                                onClick={onAvatarClick}
+                                className="profile_avatar_manage"
+                                src={DefaultAvatar}
+                                alt=""
+                            />
+                            <input onChange={onAvatarChange} ref={avatarRef} hidden={true} type="file" />
+                        </div>
+                    )}
                     <div className="profile_info">
                         {!manageOpen ? (
                             <div className="left_info">
@@ -156,11 +185,6 @@ export default function MainUserProfile(props) {
                                         ref={nameRef}
                                         type="text"
                                         placeholder={
-                                            !globalLoading
-                                                ? user.data.name
-                                                : null
-                                        }
-                                        value={
                                             !globalLoading
                                                 ? user.data.name
                                                 : null
@@ -301,6 +325,7 @@ export default function MainUserProfile(props) {
                     <ProfileCards
                         loading={globalLoading}
                         name={!globalLoading && user.data.name}
+                        user={user}
                     ></ProfileCards>
                 ) : null}
             </div>

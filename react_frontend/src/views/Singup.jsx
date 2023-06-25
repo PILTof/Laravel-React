@@ -18,8 +18,6 @@ export default function Singup(props) {
 
     const { user, token, setUser, setToken, getActiveUser } = useStateContext();
 
-    
-
     const onSubmit = (ev) => {
         ev.preventDefault();
         const payload = {
@@ -34,9 +32,8 @@ export default function Singup(props) {
                 setUser(data.user);
                 setToken(data.token);
                 setErrors(null);
+                navigator("/");
                 getActiveUser();
-                navigator('/profile')
-                console.log(data)
             })
             .catch((err) => {
                 const response = err.response;
@@ -44,7 +41,7 @@ export default function Singup(props) {
                     console.log(response.data.errors);
                     setErrors(response.data.errors);
                 } else {
-                    console.error(err)
+                    console.error(err);
                 }
             });
     };

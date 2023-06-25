@@ -33,8 +33,8 @@ export default function Login(props) {
                 setUser(data.user);
                 setToken(data.token);
                 setErrors(null);
+                navigator('/')
                 getActiveUser();
-                navigator('/profile')
             })
             .catch((err) => {
                 const response = err.response;

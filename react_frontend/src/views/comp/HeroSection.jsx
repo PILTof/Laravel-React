@@ -7,7 +7,7 @@ import {sortBy} from 'lodash'
 
 export default function HeroSection(props) {
     const { user, token, username, setUser, setToken } = useStateContext();
-
+    
 
     
 
@@ -40,7 +40,7 @@ export default function HeroSection(props) {
                         </p>
 
                         {token == null ? (
-                            <Link className="btn-singin" to={"/guest/singup"}>
+                            <Link className="btn-singin" to={"/singup"}>
                                 Get Started
                             </Link>
                         ) : null}

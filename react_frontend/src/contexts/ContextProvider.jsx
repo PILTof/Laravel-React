@@ -54,6 +54,10 @@ export const ContextProvider = ({ children }) => {
                 .get("/user")
                 .then((data) => {
                     setUser(data);
+                    localStorage.removeItem('USER_ID')
+                    localStorage.removeItem('USER_NAME')
+                    localStorage.setItem('USER_ID',data.data.id)
+                    localStorage.setItem('USER_NAME',data.data.name)
                     setGlobalLoading(false);
                 })
                 .catch((er) => {

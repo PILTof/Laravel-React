@@ -8,22 +8,20 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import Card from "./Card";
 import axios from "axios";
 import { Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfileCards(props) {
     const [loading, setLoading] = useState(true);
-    const { user, globalLoading } = useStateContext();
+    const { user, globalLoading, getActiveUser } = useStateContext();
     const [cards, setCards] = useState([]);
+
 
     useEffect(() => {
         setLoading(true);
-        // while (!globalLoading) {
-            
-        // }
-        let id = user.data.id;
+        let id = localStorage.getItem('USER_ID');
         axiosClient
             .get(`/getpost/user/${id}`)
             .then(({ data }) => {
-                console.log(data);
                 setLoading(false);
                 let arr = [];
                 for (let i = 0; i < data.length; i++) {
